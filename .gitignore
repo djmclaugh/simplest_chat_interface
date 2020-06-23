@@ -1,0 +1,9 @@
+node_modules
+tls
+chat.db
+
+client/**/*.js
+public/bundle.js
+server/**/*.js
+
+chat.db

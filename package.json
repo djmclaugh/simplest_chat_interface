@@ -1,0 +1,43 @@
+{
+  "name": "simplest_chat_interface",
+  "version": "0.0.1",
+  "description": "Web server to interact with a simplest_chat server",
+  "main": "index.js",
+  "scripts": {
+    "build-server": "tsc --p server",
+    "build-client": "tsc --p client && webpack",
+    "run-server": "npm run build-server && node server/main.js",
+    "start": "npm run build-client && npm run run-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/djmclaugh/simplest_chat_interface.git"
+  },
+  "author": "",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/djmclaugh/simplest_chat_interface/issues"
+  },
+  "homepage": "https://github.com/djmclaugh/simplest_chat_interface#readme",
+  "dependencies": {
+    "koa": "^2.12.1",
+    "koa-basic-auth": "^4.0.0",
+    "koa-static": "^5.0.0",
+    "simplest_chat": "0.0.2",
+    "sqlite3": "^4.2.0",
+    "typeorm": "^0.2.25",
+    "vue": "^2.6.11",
+    "vue-class-component": "^7.2.3",
+    "ws": "^7.3.0"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.11.3",
+    "@types/koa-basic-auth": "^2.0.3",
+    "@types/koa-static": "^4.0.1",
+    "@types/ws": "^7.2.5",
+    "typescript": "^3.9.5",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
+  }
+}
