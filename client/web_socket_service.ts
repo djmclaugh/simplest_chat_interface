@@ -2,7 +2,8 @@ type Callback = (message: any) => void;
 
 const callbacks = new Map<string, Callback[]>();
 
-const url = 'wss://localhost:12346';
+const httpsUrl: string = window.location.href;
+const url = httpsUrl.replace('https', 'wss');
 let ws: WebSocket;
 
 function connect() {
