@@ -10,23 +10,27 @@ import { onConnect } from './db/db';
 import ContactModel from './db/contact_model';
 import MessageModel from './db/message_model';
 
-const certChainLocation = process.argv[2];
-const certKeyLocation = process.argv[3];
-const port = Number.parseInt(process.argv[4]);
-const username = process.argv[5];
-const password = process.argv[6];
+let config: any;
+try {
+  config = require('./config.json');
+} catch (e) {
+  console.error("Can't find config file!");
+  console.error("Make sure you've made a copy of config_default.json, customized it as needed, and renamed it config.json.");
+  console.error();
+  throw e;
+}
 
 // Configure interface server
 const app = new Koa();
 app.use(auth({
-  name: username,
-  pass: password,
+  name: config.credentials.username,
+  pass: config.credentials.password,
 }));
 app.use(serve('public'));
 
 const server = https.createServer({
-  key: fs.readFileSync(certKeyLocation),
-  cert: fs.readFileSync(certChainLocation),
+  key: fs.readFileSync(config.certKeyLocation),
+  cert: fs.readFileSync(config.certChainLocation),
 }, app.callback())
 
 // Configure WebSocket server
@@ -92,16 +96,23 @@ async function getAllMessages(): Promise<MessageCollection[]> {
 }
 
 // Start simplest chat server
-const chatServer = spawn('node', [
+const args = [
   'node_modules/simplest_chat/chat_server.js',
-  certChainLocation,
-  certKeyLocation,
-  "" + (port - 1),
-]);
+  '-c', config.certChainLocation,
+  '-k', config.certKeyLocation,
+  '-p', "" + config.chatServerPort,
+];
+if (config.isChatServerBehindProxy) {
+  args.push('--isBehindProxy');
+}
+const chatServer = spawn('node', args);
 
 chatServer.stdout.on('data', async (data) => {
   const output = data.toString();
   if (output.indexOf(': ') === -1) {
+    if (output.trim().length > 0) {
+      console.log("Chat server: %s", output.trim());
+    }
     return;
   }
   const parts = output.split(': ');
@@ -122,8 +133,8 @@ chatServer.stderr.on('data', data => {
 function sendMessage(destinationFQDN: string, message: string): string|null {
   const result = spawnSync('node', [
     'node_modules/simplest_chat/send_message.js',
-    certChainLocation,
-    certKeyLocation,
+    config.certChainLocation,
+    config.certKeyLocation,
     destinationFQDN,
     '443',
     message,
@@ -143,6 +154,6 @@ function sendMessage(destinationFQDN: string, message: string): string|null {
 
 // Start interface server once connected to the database
 onConnect(async () => {
-  server.listen(port);
-  console.log(`Started simplest chat interface on port ${ port }.`);
+  server.listen(config.interfacePort);
+  console.log(`Started simplest chat interface on port ${ config.interfacePort }.`);
 });

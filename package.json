@@ -24,7 +24,7 @@
     "koa": "^2.12.1",
     "koa-basic-auth": "^4.0.0",
     "koa-static": "^5.0.0",
-    "simplest_chat": "0.0.2",
+    "simplest_chat": "0.0.3",
     "sqlite3": "^4.2.0",
     "typeorm": "^0.2.25",
     "vue": "^2.6.11",
