@@ -136,6 +136,9 @@ chatServer.stderr.on('data', data => {
 });
 
 function sendMessage(destinationFQDN: string, message: string): string|null {
+  if (destinationFQDN.length === 0) {
+    return "No contact selected"
+  }
   const result = spawnSync('node', [
     'node_modules/simplest_chat/send_message.js',
     config.certChainLocation,
@@ -149,7 +152,7 @@ function sendMessage(destinationFQDN: string, message: string): string|null {
   if (errorMessage.length > 0) {
     console.log(errorMessage);
     return errorMessage;
-  } else if (output !== 'message sent!'){
+  } else if (output.trim() !== 'message sent!'){
     console.log(output);
     return output;
   } else {
