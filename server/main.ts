@@ -96,7 +96,7 @@ async function getAllMessages(): Promise<MessageCollection[]> {
 }
 
 // Start simplest chat server
-const args = [
+let args = [
   'node_modules/simplest_chat/chat_server.js',
   '-p', "" + config.chatServerPort,
 ];
