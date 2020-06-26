@@ -98,13 +98,18 @@ async function getAllMessages(): Promise<MessageCollection[]> {
 // Start simplest chat server
 const args = [
   'node_modules/simplest_chat/chat_server.js',
-  '-c', config.certChainLocation,
-  '-k', config.certKeyLocation,
   '-p', "" + config.chatServerPort,
 ];
 if (config.isChatServerBehindProxy) {
   args.push('--isBehindProxy');
 }
+if (config.chatServerCertChainLocation.length > 0) {
+  args = args.concat([
+    '-c', config.chatServerCertChainLocation,
+    '-k', config.chatServerCertKeyLocation,
+  ]);
+}
+
 const chatServer = spawn('node', args);
 
 chatServer.stdout.on('data', async (data) => {

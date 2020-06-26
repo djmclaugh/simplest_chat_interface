@@ -2,6 +2,8 @@
   "isChatServerBehindProxy": false,
   "certChainLocation": "tls/cert.pem",
   "certKeyLocation": "tls/key.pem",
+  "chatServerCertChainLocation": "tls/cert.pem",
+  "chatServerCertKeyLocation": "tls/key.pem",
   "interfacePort": 8081,
   "chatServerPort": 8080,
   "credentials": {
