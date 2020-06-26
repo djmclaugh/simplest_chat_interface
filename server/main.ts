@@ -125,7 +125,7 @@ chatServer.stdout.on('data', async (data) => {
   newMessage.contact = await ContactModel.getOrCreate(parts[0]);
   newMessage.message = parts[1];
   newMessage.isSender = false;
-  newMessage.save();
+  await newMessage.save();
   for (const ws of webSocketServer.clients) {
     refresh(<WebSocket> ws);
   }
